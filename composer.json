@@ -1,0 +1,10 @@
+{
+    "name": "lorenzen-tonna-services-ltd/verivox-php-lib",
+    "type": "project",
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "Verivox\\": "src/"
+        }
+    }
+}

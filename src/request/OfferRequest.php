@@ -232,6 +232,6 @@ class OfferRequest implements Request
             }
         }
 
-        print_r($return);
+        return $return;
     }
 }

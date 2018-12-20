@@ -31,6 +31,16 @@ class Verivox
      */
     private $password;
 
+    /**
+     * @var bool
+     */
+    private $debug = false;
+
+
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
+    }
 
     public function setUsername($username)
     {
@@ -63,6 +73,9 @@ class Verivox
         $locationRequest->setRequestType($requestType);
         $locationRequest->setZipCode($zipCode);
 
+        if ($this->debug) {
+            return $this->doRequest($locationRequest, true);
+        }
         return $this->doRequest($locationRequest);
     }
 
@@ -77,6 +90,9 @@ class Verivox
         $gasRequest->setOffPeakPercentage($offPeakPercentage);
         $gasRequest->setHeatingPower($heatingPower);
 
+        if ($this->debug) {
+            return $this->doRequest($gasRequest, true);
+        }
         return $this->doRequest($gasRequest);
     }
 
@@ -91,6 +107,9 @@ class Verivox
         $electricityRequest->setOffPeakPercentage($offPeakPercentage);
         $electricityRequest->setHeatingPower($heatingPower);
 
+        if ($this->debug) {
+            return $this->doRequest($electricityRequest, true);
+        }
         return $this->doRequest($electricityRequest);
 
     }
@@ -104,10 +123,13 @@ class Verivox
         $benchmarkRequest->setHeatingPower($heatingPower);
         $benchmarkRequest->setLocationId($locationId);
 
+        if ($this->debug) {
+            return $this->doRequest($benchmarkRequest, true);
+        }
         return $this->doRequest($benchmarkRequest);
     }
 
-    private function doRequest(Request $request)
+    private function doRequest(Request $request, $getXML = false)
     {
         $ch = curl_init();
 
@@ -125,6 +147,9 @@ class Verivox
         $result = curl_exec($ch);
         curl_close($ch);
 
+        if ($getXML) {
+            return $result;
+        }
         $rs = $request->getResultSet($result);
 
         return $rs;

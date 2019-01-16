@@ -224,14 +224,14 @@ class OfferRequest implements Request
                 foreach ($offer->cost->totalCost->totalCostItem as $item) {
                     $data['cost']['items'][(string)$item->caption->text] = [
                         'text' => (string)$item->content->text,
-                        'type' => $this->getCostItemType((string)$item->content->text)
+                        'type' => $this->getCostItemType((string)$item->caption->text)
                     ];
                 }
 
                 foreach ($offer->remarks->remark as $remark) {
                     $attributes = $remark->attributes();
 
-                    $data['remark'][] = [
+                    $data['remark'][(int)$attributes['type']] = [
                         'text' => (string)$remark->content->text,
                         'type' => (int)$attributes['type'],
                     ];

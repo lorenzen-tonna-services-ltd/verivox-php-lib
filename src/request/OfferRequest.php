@@ -233,7 +233,7 @@ class OfferRequest implements Request
 
                     $data['remark'][] = [
                         'text' => (string)$remark->content->text,
-                        'type' => $attributes['type'],
+                        'type' => (int)$attributes['type'],
                     ];
                 }
 

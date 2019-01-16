@@ -171,7 +171,8 @@ class OfferRequest implements Request
                         'id' => (int)$tariffAttributes['id'],
                         'permanentId' => (int)$tariffAttributes['permanentId'],
                         'name' => (string)$tariff->content->text,
-                        'desktop' => (string)$offer->signup->desktop->attributes()['url']
+                        'desktop' => (string)$offer->signup->desktop->attributes()['url'],
+                        'eco' => (int)$tariffAttributes['isEcoTariff'],
                     ],
                     'cost' => [
                         'total' => (float)$offer->cost->totalCost->attributes()['amount'],
@@ -221,11 +222,19 @@ class OfferRequest implements Request
                 }
 
                 foreach ($offer->cost->totalCost->totalCostItem as $item) {
-                    $data['cost']['items'][(string)$item->caption->text] = (string)$item->content->text;
+                    $data['cost']['items'][(string)$item->caption->text] = [
+                        'text' => (string)$item->content->text,
+                        'type' => $this->getCostItemType((string)$item->content->text)
+                    ];
                 }
 
                 foreach ($offer->remarks->remark as $remark) {
-                    $data['remark'][] = (string)$remark->content->text;
+                    $attributes = $remark->attributes();
+
+                    $data['remark'][] = [
+                        'text' => (string)$remark->content->text,
+                        'type' => $attributes['type'],
+                    ];
                 }
 
                 $return[] = $data;
@@ -233,5 +242,18 @@ class OfferRequest implements Request
         }
 
         return $return;
+    }
+
+    private function getCostItemType($text)
+    {
+        if (mb_stristr($text, 'grund')) {
+            return 'basic';
+        } else if (mb_stristr($text, 'neukunden')) {
+            return 'new-client';
+        } else if (mb_stristr($text, 'sofort')) {
+            return 'instant';
+        } else if (mb_stristr($text, 'jubiläum')) {
+            return 'jubilee';
+        }
     }
 }

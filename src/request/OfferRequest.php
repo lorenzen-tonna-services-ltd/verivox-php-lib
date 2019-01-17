@@ -23,6 +23,21 @@ class OfferRequest implements Request
     /**
      * @var string
      */
+    private $guarantee;
+
+    /**
+     * @var string
+     */
+    private $prolongation;
+
+    /**
+     * @var string
+     */
+    private $cancellation;
+
+    /**
+     * @var string
+     */
     private $locationId;
 
     /**
@@ -75,7 +90,9 @@ class OfferRequest implements Request
         if (!empty($this->duration)) {
             $xmlRoot->setAttribute('maxContractDuration', $this->duration);
         }
-        $xmlRoot->setAttribute('maxContractProlongation', 12);
+        if (!empty($this->prolongation)) {
+            $xmlRoot->setAttribute('maxContractProlongation', $this->prolongation);
+        }
         $xmlRoot->setAttribute('benchmarkTariffId', 0);
         $xmlRoot = $dom->appendChild($xmlRoot);
 
@@ -91,14 +108,20 @@ class OfferRequest implements Request
 
         $xmlRoot->appendChild($usage);
 
-        $pg = $dom->createElement('priceGuarantee');
-        $pg->setAttribute('minDurationInMonths', 12);
+        if (!empty($this->guarantee)) {
+            $pg = $dom->createElement('priceGuarantee');
+            $pg->setAttribute('minDurationInMonths', $this->guarantee);
 
-        $xmlRoot->appendChild($pg);
+            $xmlRoot->appendChild($pg);
+        }
 
-        $cp = $dom->createElement('cancellationPeriod');
-        $cp->setAttribute('amount', 3);
-        $cp->setAttribute('unit', 'month');
+        if (!empty($this->cancellation)) {
+            $cp = $dom->createElement('cancellationPeriod');
+            $cp->setAttribute('amount', $this->cancellation);
+            $cp->setAttribute('unit', 'month');
+
+            $xmlRoot->appendChild($cp);
+        }
 
         return $dom->saveXML();
     }
@@ -121,6 +144,21 @@ class OfferRequest implements Request
     public function setMaxContractDuration($duration)
     {
         $this->duration = $duration;
+    }
+
+    public function setMaxProlongation($prolongation)
+    {
+        $this->prolongation = $prolongation;
+    }
+
+    public function setMaxCancellation($cancellation)
+    {
+        $this->cancellation = $cancellation;
+    }
+
+    public function setPriceGuarantee($priceGuarantee)
+    {
+        $this->guarantee = $priceGuarantee;
     }
 
     public function setAnnualTotal($annualTotal)

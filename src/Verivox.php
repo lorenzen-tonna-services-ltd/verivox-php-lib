@@ -78,6 +78,14 @@ class Verivox
         }
         return $this->doRequest($locationRequest);
     }
+    
+    public function executeRequest(Request $request)
+    {
+        if ($this->debug) {
+            return $this->doRequest($request, true);
+        }
+        return $this->doRequest($request);
+    }
 
     public function getGasOffers($zipCode, $locationId, $duration, $annualTotal, $offPeakPercentage, $heatingPower)
     {

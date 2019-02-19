@@ -314,6 +314,10 @@ class OfferRequest implements Request
                     ];
                 }
 
+                if (empty($data['cost']['total_no_bonus'])) {
+                    $data['cost']['total_no_bonus'] = $data['cost']['fixed'] + $data['cost']['usage'] + $data['cost']['package'] + $data['cost']['setup'];
+                }
+
                 $return[] = $data;
             }
         }

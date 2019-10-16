@@ -26,6 +26,11 @@ class TariffRequest implements Request
      */
     private $requestType;
 
+    /**
+     * @var string
+     */
+    private $profile = 'private';
+
     public function getHeaders()
     {
         return [
@@ -58,9 +63,14 @@ class TariffRequest implements Request
         $this->requestType = $requestType;
     }
 
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+    }
+
     public function getRequestUrl($partnerId, $campaignId)
     {
-        $url = 'https://www.verivox.de/servicehook/suppliers/' . $this->requestType . '/' . $this->supplierId . '/private/location/' . $this->zipCode . '/';
+        $url = 'https://www.verivox.de/servicehook/suppliers/' . $this->requestType . '/' . $this->supplierId . '/'. $this->profile .'/location/' . $this->zipCode . '/';
         if (!empty($this->locationId)) {
             $url .= $this->locationId .'/';
         }

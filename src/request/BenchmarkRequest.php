@@ -33,6 +33,11 @@ class BenchmarkRequest implements Request
      */
     private $heatingPower;
 
+    /**
+     * @var string
+     */
+    private $profile = 'h0';
+
     public function getHeaders()
     {
         return [
@@ -70,9 +75,14 @@ class BenchmarkRequest implements Request
         $this->heatingPower = $heatingPower;
     }
 
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+    }
+
     public function getRequestUrl($partnerId, $campaignId)
     {
-        $url  = 'https://www.verivox.de/servicehook/benchmarks/' . $this->requestType . '/profiles/h0/locations/' . $this->zipCode . '/';
+        $url  = 'https://www.verivox.de/servicehook/benchmarks/' . $this->requestType . '/profiles/' . $this->profile . '/locations/' . $this->zipCode . '/';
         if (!empty($this->locationId)) {
             $url .= $this->locationId . '/';
         }

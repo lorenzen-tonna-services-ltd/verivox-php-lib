@@ -87,7 +87,7 @@ class Verivox
         return $this->doRequest($request);
     }
 
-    public function getGasOffers($zipCode, $locationId, $duration, $annualTotal, $offPeakPercentage, $heatingPower)
+    public function getGasOffers($zipCode, $locationId, $duration, $annualTotal, $offPeakPercentage, $heatingPower, $profile = 'h0')
     {
         $gasRequest = new OfferRequest();
         $gasRequest->setRequestType(self::REQUEST_TYPE_GAS);
@@ -97,6 +97,7 @@ class Verivox
         $gasRequest->setAnnualTotal($annualTotal);
         $gasRequest->setOffPeakPercentage($offPeakPercentage);
         $gasRequest->setHeatingPower($heatingPower);
+        $gasRequest->setProfile($profile);
 
         if ($this->debug) {
             return $this->doRequest($gasRequest, true);
@@ -104,7 +105,7 @@ class Verivox
         return $this->doRequest($gasRequest);
     }
 
-    public function getElectricityOffers($zipCode, $locationId, $duration, $annualTotal, $offPeakPercentage, $heatingPower)
+    public function getElectricityOffers($zipCode, $locationId, $duration, $annualTotal, $offPeakPercentage, $heatingPower, $profile = 'h0')
     {
         $electricityRequest = new OfferRequest();
         $electricityRequest->setRequestType(self::REQUEST_TYPE_ELECTRICITY);
@@ -114,6 +115,7 @@ class Verivox
         $electricityRequest->setAnnualTotal($annualTotal);
         $electricityRequest->setOffPeakPercentage($offPeakPercentage);
         $electricityRequest->setHeatingPower($heatingPower);
+        $electricityRequest->setProfile($profile);
 
         if ($this->debug) {
             return $this->doRequest($electricityRequest, true);
@@ -122,7 +124,7 @@ class Verivox
 
     }
 
-    public function getBenchmarkOffers($zipCode, $requestType, $usage, $heatingPower, $locationId)
+    public function getBenchmarkOffers($zipCode, $requestType, $usage, $heatingPower, $locationId, $profile = 'h0')
     {
         $benchmarkRequest = new BenchmarkRequest();
         $benchmarkRequest->setRequestType($requestType);
@@ -130,6 +132,7 @@ class Verivox
         $benchmarkRequest->setAnnualTotal($usage);
         $benchmarkRequest->setHeatingPower($heatingPower);
         $benchmarkRequest->setLocationId($locationId);
+        $benchmarkRequest->setProfile($profile);
 
         if ($this->debug) {
             return $this->doRequest($benchmarkRequest, true);

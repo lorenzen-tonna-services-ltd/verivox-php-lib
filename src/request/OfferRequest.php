@@ -65,6 +65,11 @@ class OfferRequest implements Request
      */
     private $benchmarkTariffId;
 
+    /**
+     * @var string
+     */
+    private $profile = 'h0';
+
     public function getHeaders()
     {
         if (Verivox::REQUEST_TYPE_ELECTRICITY == $this->requestType) {
@@ -85,7 +90,7 @@ class OfferRequest implements Request
         $dom = new \DOMDocument('1.0', 'UTF-8');
 
         $xmlRoot = $dom->createElement("criteria");
-        $xmlRoot->setAttribute('profile', 'h0');
+        $xmlRoot->setAttribute('profile', $this->profile);
         $xmlRoot->setAttribute('prepayment', "false");
         $xmlRoot->setAttribute('includePackageTariffs', "false");
         $xmlRoot->setAttribute('includeTariffsWithDeposit', "false");
@@ -152,6 +157,11 @@ class OfferRequest implements Request
         }
 
         return $dom->saveXML();
+    }
+
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
     }
 
     public function setEcoOnly($ecoOnly)

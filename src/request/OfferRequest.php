@@ -96,7 +96,11 @@ class OfferRequest implements Request
         $xmlRoot->setAttribute('includeTariffsWithDeposit', "false");
         $xmlRoot->setAttribute('includeNonCompliantTariffs', "false");
         $xmlRoot->setAttribute('onlyProductsWithGoodCustomerRating', "false");
-        $xmlRoot->setAttribute('onlyEcoTariffs', "false");
+        if ($this->requestType == 'gas' && ($this->profile == 'g0' || $this->profile == 'business') && $this->ecoTariffOnly == 1) {
+            $xmlRoot->setAttribute('onlyEcoTariffs', "true");
+        } else {
+            $xmlRoot->setAttribute('onlyEcoTariffs', "false");
+        }
         $xmlRoot->setAttribute('bonusIncluded', "non-compliant");
         $xmlRoot->setAttribute('signupOnly', "true");
         $xmlRoot->setAttribute('maxResultsPerPage', 0);
